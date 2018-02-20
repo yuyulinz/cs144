@@ -1,20 +1,22 @@
 <app-list></app-list>
 <div *ngIf="post">
-  <h2>Title:</h2>
-  <div>
-      <label>Title:
-        <input [(ngModel)]="post.title" placeholder="title">
+  <form [formGroup]="postForm" novalidate>
+    <h2>Title:</h2>
+    <div>
+        <label>Title:
+          <input [(ngModel)]="post.title" formControlName="title" placeholder="title">
+        </label>
+    </div>
+    <h2>Body:</h2>
+    <div>
+      <label>Body:
+        <textarea [(ngModel)]="post.body" formControlName="body" placeholder="body">
+        </textarea>
       </label>
-  </div>
-  <h2>Body:</h2>
-  <div>
-    <label>Body:
-      <textarea [(ngModel)]="post.body" placeholder="body">
-      </textarea>
-    </label>
-  </div>
+    </div>
+  </form>
 
-<button (click)="savePost()">Save</button>
+<button (click)="savePost()" [disabled]="postForm.pristine">Save</button>
 <button (click)="deletePost()">Delete</button>
 
 <button routerLink="/preview/{{post.postid}}">Preview</button>

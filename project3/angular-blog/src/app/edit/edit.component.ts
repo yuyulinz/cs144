@@ -1,6 +1,8 @@
-import { Component, OnInit, Input, HostListener } from '@angular/core';
+import { Component, OnInit, Input, HostListener} from '@angular/core';
 import { Post, BlogService } from '../blog.service';
 import { ActivatedRoute, Router } from '@angular/router';
+
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-edit',
@@ -11,6 +13,11 @@ export class EditComponent implements OnInit {
 
   @Input() post: Post;
 
+  postForm = new FormGroup ({
+    title: new FormControl(),
+    body: new FormControl()
+  });
+
   constructor(
     private blogService: BlogService,
     private route: ActivatedRoute,
@@ -19,6 +26,9 @@ export class EditComponent implements OnInit {
   ngOnInit() {
     this.getPost();
     this.route.params.subscribe(() => this.getPost());
+    this.router.routeReuseStrategy.shouldReuseRoute = function() {
+      return false;
+    }
   }
 
   getPost(): void {
@@ -32,6 +42,10 @@ export class EditComponent implements OnInit {
     oldPost.title = this.post.title;
     oldPost.body = this.post.body;
     this.blogService.updatePost(oldPost);
+    this.postForm.reset({
+      title: this.post.title,
+      body: this.post.body
+    });
   }
 
   deletePost(): void {
