@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, HostListener } from '@angular/core';
 import { Post, BlogService } from '../blog.service';
 import { ActivatedRoute, Router } from '@angular/router';
 
@@ -26,12 +26,12 @@ export class EditComponent implements OnInit {
     this.post = this.blogService.getPost(id);
   }
 
+  @HostListener('window:beforeunload')
   savePost(): void {
     var oldPost = this.blogService.getPost(this.post.postid);
     oldPost.title = this.post.title;
     oldPost.body = this.post.body;
     this.blogService.updatePost(oldPost);
-    this.router.navigate(['/']);
   }
 
   deletePost(): void {
