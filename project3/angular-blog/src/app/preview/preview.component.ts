@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Post, BlogService } from '../blog.service';
+import { Parser, HtmlRenderer } from 'commonmark';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-preview',
@@ -7,9 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PreviewComponent implements OnInit {
 
-  constructor() { }
+  post: Post;
+  title: String;
+  body: String;
+
+  constructor(
+    private blogService: BlogService,
+    private route: ActivatedRoute,
+    private router: Router
+  ) { }
 
   ngOnInit() {
+    this.getPost();
   }
+
+  getPost(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.post = this.blogService.getPost(id);
+    this.title = this.post.title;
+    this.body = this.post.body;
+  }
+
 
 }

@@ -8,6 +8,7 @@ import { BlogService } from './blog.service';
 import { EditComponent } from './edit/edit.component';
 import { ListComponent } from './list/list.component';
 import { PreviewComponent } from './preview/preview.component';
+import { AppRoutingModule } from './/app-routing.module';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { PreviewComponent } from './preview/preview.component';
   ],
   imports: [
     BrowserModule,
-    FormsModule
+    FormsModule,
+    AppRoutingModule
   ],
   providers: [BlogService],
   bootstrap: [AppComponent]

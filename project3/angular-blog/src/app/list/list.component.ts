@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Post, BlogService } from '../blog.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -12,7 +13,9 @@ export class ListComponent implements OnInit {
 
   selectedPost: Post;
 
-  constructor(private blogService: BlogService) { }
+  constructor(private blogService: BlogService,
+  private route: ActivatedRoute,
+  private router: Router) { }
 
   ngOnInit() {
     this.posts = this.blogService.getPosts();
@@ -24,6 +27,7 @@ export class ListComponent implements OnInit {
 
   addPost(): void {
     this.editPost(this.blogService.newPost());
+    this.router.navigate(['/edit/'+this.selectedPost.postid]);
   }
 
 }

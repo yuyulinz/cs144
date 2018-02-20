@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Post, BlogService } from '../blog.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-edit',
@@ -10,10 +11,19 @@ export class EditComponent implements OnInit {
 
   @Input() post: Post;
 
-  constructor(private blogService: BlogService) { }
+  constructor(
+    private blogService: BlogService,
+    private route: ActivatedRoute,
+    private router: Router) { }
 
   ngOnInit() {
-    //console.log(this.blogService.getPosts());
+    this.getPost();
+    this.route.params.subscribe(() => this.getPost());
+  }
+
+  getPost(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.post = this.blogService.getPost(id);
   }
 
   savePost(): void {
@@ -21,11 +31,13 @@ export class EditComponent implements OnInit {
     oldPost.title = this.post.title;
     oldPost.body = this.post.body;
     this.blogService.updatePost(oldPost);
+    this.router.navigate(['/']);
   }
 
   deletePost(): void {
     this.blogService.deletePost(this.post.postid);
     delete this.post;
+    this.router.navigate(['/']);
   }
 
 }
